@@ -11,7 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MainRouteImport } from './routes/_main'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SesionFridgeIdRouteImport } from './routes/sesion.$fridgeId'
+import { Route as MainTarjetasRouteImport } from './routes/_main.tarjetas'
+import { Route as MainHeladerasRouteImport } from './routes/_main.heladeras'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -23,40 +27,91 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MainRoute = MainRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SesionFridgeIdRoute = SesionFridgeIdRouteImport.update({
+  id: '/sesion/$fridgeId',
+  path: '/sesion/$fridgeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainTarjetasRoute = MainTarjetasRouteImport.update({
+  id: '/tarjetas',
+  path: '/tarjetas',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainHeladerasRoute = MainHeladerasRouteImport.update({
+  id: '/heladeras',
+  path: '/heladeras',
+  getParentRoute: () => MainRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/heladeras': typeof MainHeladerasRoute
+  '/tarjetas': typeof MainTarjetasRoute
+  '/sesion/$fridgeId': typeof SesionFridgeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/heladeras': typeof MainHeladerasRoute
+  '/tarjetas': typeof MainTarjetasRoute
+  '/sesion/$fridgeId': typeof SesionFridgeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_main': typeof MainRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_main/heladeras': typeof MainHeladerasRoute
+  '/_main/tarjetas': typeof MainTarjetasRoute
+  '/sesion/$fridgeId': typeof SesionFridgeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/heladeras'
+    | '/tarjetas'
+    | '/sesion/$fridgeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register'
-  id: '__root__' | '/' | '/login' | '/register'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/heladeras'
+    | '/tarjetas'
+    | '/sesion/$fridgeId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_main'
+    | '/login'
+    | '/register'
+    | '/_main/heladeras'
+    | '/_main/tarjetas'
+    | '/sesion/$fridgeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MainRoute: typeof MainRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SesionFridgeIdRoute: typeof SesionFridgeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -82,13 +144,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sesion/$fridgeId': {
+      id: '/sesion/$fridgeId'
+      path: '/sesion/$fridgeId'
+      fullPath: '/sesion/$fridgeId'
+      preLoaderRoute: typeof SesionFridgeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/tarjetas': {
+      id: '/_main/tarjetas'
+      path: '/tarjetas'
+      fullPath: '/tarjetas'
+      preLoaderRoute: typeof MainTarjetasRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/heladeras': {
+      id: '/_main/heladeras'
+      path: '/heladeras'
+      fullPath: '/heladeras'
+      preLoaderRoute: typeof MainHeladerasRouteImport
+      parentRoute: typeof MainRoute
+    }
   }
 }
 
+interface MainRouteChildren {
+  MainHeladerasRoute: typeof MainHeladerasRoute
+  MainTarjetasRoute: typeof MainTarjetasRoute
+}
+
+const MainRouteChildren: MainRouteChildren = {
+  MainHeladerasRoute: MainHeladerasRoute,
+  MainTarjetasRoute: MainTarjetasRoute,
+}
+
+const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MainRoute: MainRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SesionFridgeIdRoute: SesionFridgeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
