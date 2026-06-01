@@ -174,6 +174,9 @@ function TxDetailPage() {
           </div>
         </div>
 
+        <SessionVideo createdAt={tx.createdAt} fridgeName={tx.fridgeName} />
+
+
         <div className="mt-5 flex items-center justify-between">
           <h2 className="font-semibold">Productos</h2>
           {!editing && tx.status !== "in_review" && (
