@@ -1,8 +1,8 @@
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, Outlet, Navigate } from "@tanstack/react-router";
 import { PhoneShell } from "@/components/PhoneShell";
 import { BottomNav } from "@/components/BottomNav";
 import { useStore } from "@/lib/mock/store";
+import { useHydrated } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_main")({
   component: MainLayout,
@@ -10,11 +10,13 @@ export const Route = createFileRoute("/_main")({
 
 function MainLayout() {
   const user = useStore((s) => s.user);
-  const navigate = useNavigate();
+  const hydrated = useHydrated();
 
-  useEffect(() => {
-    if (!user) navigate({ to: "/" });
-  }, [user, navigate]);
+  // After hydration, if there is no user, redirect to the landing.
+  // Before hydration we still render the shell so SSR/initial paint is never blank.
+  if (hydrated && !user) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <PhoneShell>
