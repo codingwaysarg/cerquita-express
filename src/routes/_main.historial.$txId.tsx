@@ -29,7 +29,11 @@ import {
   Pencil,
   AlertCircle,
   MapPin,
+  Play,
+  Pause,
+  Video as VideoIcon,
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
