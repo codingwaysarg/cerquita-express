@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { PhoneShell } from "@/components/PhoneShell";
 import { Button } from "@/components/ui/button";
-import { useStore } from "@/lib/mock/store";
+import { useStore, api, mockCartForFridge } from "@/lib/mock/store";
 import { startSession, useSession, resetSession } from "@/lib/mock/session";
 import { Check, Loader2, DoorOpen, AlertCircle, ShoppingBag } from "lucide-react";
 import type { SessionState } from "@/lib/mock/types";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/sesion/$fridgeId")({
   component: SessionPage,
@@ -39,11 +40,20 @@ function SessionPage() {
   const fridge = useStore((s) => s.fridges.find((f) => f.id === fridgeId));
   const { state } = useSession();
   const navigate = useNavigate();
+  const createdRef = useRef(false);
 
   useEffect(() => {
     startSession(fridgeId);
     return () => resetSession();
   }, [fridgeId]);
+
+  useEffect(() => {
+    if (state === "done" && !createdRef.current) {
+      createdRef.current = true;
+      api.createTransaction({ fridgeId, items: mockCartForFridge() });
+    }
+  }, [state, fridgeId]);
+
 
   const stepIdx = steps.findIndex((s) => s.key === state);
 

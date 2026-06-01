@@ -1,9 +1,10 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { CreditCard, Refrigerator } from "lucide-react";
+import { CreditCard, Refrigerator, Receipt } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { to: "/heladeras", label: "Heladeras", Icon: Refrigerator },
+  { to: "/historial", label: "Historial", Icon: Receipt },
   { to: "/tarjetas", label: "Tarjetas", Icon: CreditCard },
 ] as const;
 
@@ -11,7 +12,7 @@ export function BottomNav() {
   const { pathname } = useLocation();
   return (
     <nav className="sticky bottom-0 z-20 bg-background/90 backdrop-blur-md border-t border-border/60 safe-bottom">
-      <ul className="grid grid-cols-2 px-2 pt-2">
+      <ul className="grid grid-cols-3 px-2 pt-2">
         {items.map(({ to, label, Icon }) => {
           const active = pathname.startsWith(to);
           return (

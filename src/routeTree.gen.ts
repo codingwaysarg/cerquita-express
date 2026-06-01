@@ -15,7 +15,9 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SesionFridgeIdRouteImport } from './routes/sesion.$fridgeId'
 import { Route as MainTarjetasRouteImport } from './routes/_main.tarjetas'
+import { Route as MainHistorialRouteImport } from './routes/_main.historial'
 import { Route as MainHeladerasRouteImport } from './routes/_main.heladeras'
+import { Route as MainHistorialTxIdRouteImport } from './routes/_main.historial.$txId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -46,10 +48,20 @@ const MainTarjetasRoute = MainTarjetasRouteImport.update({
   path: '/tarjetas',
   getParentRoute: () => MainRoute,
 } as any)
+const MainHistorialRoute = MainHistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainHeladerasRoute = MainHeladerasRouteImport.update({
   id: '/heladeras',
   path: '/heladeras',
   getParentRoute: () => MainRoute,
+} as any)
+const MainHistorialTxIdRoute = MainHistorialTxIdRouteImport.update({
+  id: '/$txId',
+  path: '/$txId',
+  getParentRoute: () => MainHistorialRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -57,16 +69,20 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/heladeras': typeof MainHeladerasRoute
+  '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/heladeras': typeof MainHeladerasRoute
+  '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -75,8 +91,10 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_main/heladeras': typeof MainHeladerasRoute
+  '/_main/historial': typeof MainHistorialRouteWithChildren
   '/_main/tarjetas': typeof MainTarjetasRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/_main/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -85,16 +103,20 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/heladeras'
+    | '/historial'
     | '/tarjetas'
     | '/sesion/$fridgeId'
+    | '/historial/$txId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
     | '/heladeras'
+    | '/historial'
     | '/tarjetas'
     | '/sesion/$fridgeId'
+    | '/historial/$txId'
   id:
     | '__root__'
     | '/'
@@ -102,8 +124,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_main/heladeras'
+    | '/_main/historial'
     | '/_main/tarjetas'
     | '/sesion/$fridgeId'
+    | '/_main/historial/$txId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainTarjetasRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/historial': {
+      id: '/_main/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof MainHistorialRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/heladeras': {
       id: '/_main/heladeras'
       path: '/heladeras'
@@ -165,16 +196,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainHeladerasRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/historial/$txId': {
+      id: '/_main/historial/$txId'
+      path: '/$txId'
+      fullPath: '/historial/$txId'
+      preLoaderRoute: typeof MainHistorialTxIdRouteImport
+      parentRoute: typeof MainHistorialRoute
+    }
   }
 }
 
+interface MainHistorialRouteChildren {
+  MainHistorialTxIdRoute: typeof MainHistorialTxIdRoute
+}
+
+const MainHistorialRouteChildren: MainHistorialRouteChildren = {
+  MainHistorialTxIdRoute: MainHistorialTxIdRoute,
+}
+
+const MainHistorialRouteWithChildren = MainHistorialRoute._addFileChildren(
+  MainHistorialRouteChildren,
+)
+
 interface MainRouteChildren {
   MainHeladerasRoute: typeof MainHeladerasRoute
+  MainHistorialRoute: typeof MainHistorialRouteWithChildren
   MainTarjetasRoute: typeof MainTarjetasRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainHeladerasRoute: MainHeladerasRoute,
+  MainHistorialRoute: MainHistorialRouteWithChildren,
   MainTarjetasRoute: MainTarjetasRoute,
 }
 
