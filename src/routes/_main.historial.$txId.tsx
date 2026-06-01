@@ -64,6 +64,11 @@ function TxDetailPage() {
   const [reason, setReason] = useState(tx?.appealReason ?? "");
   const [submitting, setSubmitting] = useState(false);
 
+  const productById = useMemo(
+    () => new Map(products.map((p) => [p.id, p])),
+    [products],
+  );
+
   if (!tx) {
     return <Navigate to="/historial" />;
   }
@@ -72,10 +77,6 @@ function TxDetailPage() {
   const total = items.reduce((s, i) => s + i.qty * i.unitPrice, 0);
   const meta = STATUS_META[tx.status];
 
-  const productById = useMemo(
-    () => new Map(products.map((p) => [p.id, p])),
-    [products],
-  );
 
   function startEdit() {
     setDraft(tx!.items.map((i) => ({ ...i })));
