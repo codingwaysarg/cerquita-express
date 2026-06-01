@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as SesionFridgeIdRouteImport } from './routes/sesion.$fridgeId'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as MainTarjetasRouteImport } from './routes/_main.tarjetas'
 import { Route as MainHistorialRouteImport } from './routes/_main.historial'
 import { Route as MainHeladerasRouteImport } from './routes/_main.heladeras'
@@ -29,6 +32,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MainRoute = MainRouteImport.update({
   id: '/_main',
   getParentRoute: () => rootRouteImport,
@@ -38,10 +46,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const SesionFridgeIdRoute = SesionFridgeIdRouteImport.update({
   id: '/sesion/$fridgeId',
   path: '/sesion/$fridgeId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 const MainTarjetasRoute = MainTarjetasRouteImport.update({
   id: '/tarjetas',
@@ -66,12 +84,15 @@ const MainHistorialTxIdRoute = MainHistorialTxIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/heladeras': typeof MainHeladerasRoute
   '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
+  '/admin/login': typeof AdminLoginRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRoutesByTo {
@@ -81,31 +102,39 @@ export interface FileRoutesByTo {
   '/heladeras': typeof MainHeladerasRoute
   '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
+  '/admin/login': typeof AdminLoginRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin': typeof AdminIndexRoute
   '/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_main': typeof MainRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_main/heladeras': typeof MainHeladerasRoute
   '/_main/historial': typeof MainHistorialRouteWithChildren
   '/_main/tarjetas': typeof MainTarjetasRoute
+  '/admin/login': typeof AdminLoginRoute
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/_main/historial/$txId': typeof MainHistorialTxIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/login'
     | '/register'
     | '/heladeras'
     | '/historial'
     | '/tarjetas'
+    | '/admin/login'
     | '/sesion/$fridgeId'
+    | '/admin/'
     | '/historial/$txId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -115,24 +144,30 @@ export interface FileRouteTypes {
     | '/heladeras'
     | '/historial'
     | '/tarjetas'
+    | '/admin/login'
     | '/sesion/$fridgeId'
+    | '/admin'
     | '/historial/$txId'
   id:
     | '__root__'
     | '/'
     | '/_main'
+    | '/admin'
     | '/login'
     | '/register'
     | '/_main/heladeras'
     | '/_main/historial'
     | '/_main/tarjetas'
+    | '/admin/login'
     | '/sesion/$fridgeId'
+    | '/admin/'
     | '/_main/historial/$txId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MainRoute: typeof MainRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SesionFridgeIdRoute: typeof SesionFridgeIdRoute
@@ -154,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_main': {
       id: '/_main'
       path: ''
@@ -168,12 +210,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/sesion/$fridgeId': {
       id: '/sesion/$fridgeId'
       path: '/sesion/$fridgeId'
       fullPath: '/sesion/$fridgeId'
       preLoaderRoute: typeof SesionFridgeIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_main/tarjetas': {
       id: '/_main/tarjetas'
@@ -232,9 +288,22 @@ const MainRouteChildren: MainRouteChildren = {
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainRoute: MainRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SesionFridgeIdRoute: SesionFridgeIdRoute,
@@ -242,3 +311,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
