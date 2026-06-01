@@ -457,3 +457,118 @@ function AddProductButton({
     </Popover>
   );
 }
+
+// Mocked sample of the in-fridge camera footage. Replace with real signed URL.
+const SAMPLE_VIDEO_URL =
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
+
+function SessionVideo({
+  createdAt,
+  fridgeName,
+}: {
+  createdAt: number;
+  fridgeName: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  function toggle() {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  }
+
+  const time = new Date(createdAt).toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  return (
+    <div className="mt-4 rounded-3xl overflow-hidden bg-card border border-border/60 shadow-soft">
+      <div className="flex items-center justify-between px-4 pt-4">
+        <div className="flex items-center gap-2">
+          <div className="size-8 rounded-xl bg-primary/10 text-primary grid place-items-center">
+            <VideoIcon className="size-4" />
+          </div>
+          <div>
+            <div className="text-sm font-semibold leading-tight">
+              Video de la sesión
+            </div>
+            <div className="text-[11px] text-muted-foreground">
+              Cámara interior · {fridgeName}
+            </div>
+          </div>
+        </div>
+        <span className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+          Rec
+        </span>
+      </div>
+
+      <div className="relative mt-3 aspect-video bg-black">
+        <video
+          ref={videoRef}
+          src={SAMPLE_VIDEO_URL}
+          className="w-full h-full object-cover"
+          playsInline
+          preload="metadata"
+          onCanPlay={() => setLoaded(true)}
+          onEnded={() => setPlaying(false)}
+          onPause={() => setPlaying(false)}
+          onPlay={() => setPlaying(true)}
+          onClick={toggle}
+        />
+
+        {/* Overlay HUD */}
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-3">
+          <div className="flex items-center justify-between text-[10px] font-mono text-white/90">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 px-2 py-1 backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-red-500 pulse-dot" />
+              CAM-01
+            </span>
+            <span className="rounded-full bg-black/40 px-2 py-1 backdrop-blur-sm tabular-nums">
+              {time}
+            </span>
+          </div>
+
+          {!playing && (
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label="Reproducir"
+              className="pointer-events-auto self-center size-16 rounded-full bg-white/95 text-foreground grid place-items-center shadow-lg hover:scale-105 transition-transform"
+            >
+              <Play className="size-7 ml-1" fill="currentColor" />
+            </button>
+          )}
+
+          <div className="text-[10px] font-mono text-white/70">
+            {loaded ? "● LIVE PLAYBACK" : "● CARGANDO…"}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between px-4 py-3">
+        <button
+          type="button"
+          onClick={toggle}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
+          {playing ? "Pausar" : "Reproducir"}
+        </button>
+        <span className="text-xs text-muted-foreground">
+          Disponible 7 días
+        </span>
+      </div>
+    </div>
+  );
+}
+
