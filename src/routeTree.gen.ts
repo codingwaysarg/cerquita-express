@@ -11,13 +11,29 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as SesionFridgeIdRouteImport } from './routes/sesion.$fridgeId'
+import { Route as AdminTransactionsRouteImport } from './routes/admin.transactions'
+import { Route as AdminTrainingRouteImport } from './routes/admin.training'
+import { Route as AdminSimRouteImport } from './routes/admin.sim'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminReviewRouteImport } from './routes/admin.review'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminFridgesRouteImport } from './routes/admin.fridges'
 import { Route as MainTarjetasRouteImport } from './routes/_main.tarjetas'
 import { Route as MainHistorialRouteImport } from './routes/_main.historial'
 import { Route as MainHeladerasRouteImport } from './routes/_main.heladeras'
+import { Route as AdminTransactionsIdRouteImport } from './routes/admin.transactions.$id'
+import { Route as AdminSimFridgeIdRouteImport } from './routes/admin.sim.$fridgeId'
+import { Route as AdminReviewLabelingRouteImport } from './routes/admin.review.labeling'
+import { Route as AdminProductsIdRouteImport } from './routes/admin.products.$id'
+import { Route as AdminFridgesIdRouteImport } from './routes/admin.fridges.$id'
 import { Route as MainHistorialTxIdRouteImport } from './routes/_main.historial.$txId'
+import { Route as AdminReviewLabelTransactionIdRouteImport } from './routes/admin.review.label.$transactionId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -29,6 +45,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MainRoute = MainRouteImport.update({
   id: '/_main',
   getParentRoute: () => rootRouteImport,
@@ -38,10 +59,55 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const SesionFridgeIdRoute = SesionFridgeIdRouteImport.update({
   id: '/sesion/$fridgeId',
   path: '/sesion/$fridgeId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTransactionsRoute = AdminTransactionsRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTrainingRoute = AdminTrainingRouteImport.update({
+  id: '/training',
+  path: '/training',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSimRoute = AdminSimRouteImport.update({
+  id: '/sim',
+  path: '/sim',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReviewRoute = AdminReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFridgesRoute = AdminFridgesRouteImport.update({
+  id: '/fridges',
+  path: '/fridges',
+  getParentRoute: () => AdminRoute,
 } as any)
 const MainTarjetasRoute = MainTarjetasRouteImport.update({
   id: '/tarjetas',
@@ -58,21 +124,68 @@ const MainHeladerasRoute = MainHeladerasRouteImport.update({
   path: '/heladeras',
   getParentRoute: () => MainRoute,
 } as any)
+const AdminTransactionsIdRoute = AdminTransactionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminTransactionsRoute,
+} as any)
+const AdminSimFridgeIdRoute = AdminSimFridgeIdRouteImport.update({
+  id: '/$fridgeId',
+  path: '/$fridgeId',
+  getParentRoute: () => AdminSimRoute,
+} as any)
+const AdminReviewLabelingRoute = AdminReviewLabelingRouteImport.update({
+  id: '/labeling',
+  path: '/labeling',
+  getParentRoute: () => AdminReviewRoute,
+} as any)
+const AdminProductsIdRoute = AdminProductsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminProductsRoute,
+} as any)
+const AdminFridgesIdRoute = AdminFridgesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminFridgesRoute,
+} as any)
 const MainHistorialTxIdRoute = MainHistorialTxIdRouteImport.update({
   id: '/$txId',
   path: '/$txId',
   getParentRoute: () => MainHistorialRoute,
 } as any)
+const AdminReviewLabelTransactionIdRoute =
+  AdminReviewLabelTransactionIdRouteImport.update({
+    id: '/label/$transactionId',
+    path: '/label/$transactionId',
+    getParentRoute: () => AdminReviewRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/heladeras': typeof MainHeladerasRoute
   '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
+  '/admin/fridges': typeof AdminFridgesRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/products': typeof AdminProductsRouteWithChildren
+  '/admin/review': typeof AdminReviewRouteWithChildren
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sim': typeof AdminSimRouteWithChildren
+  '/admin/training': typeof AdminTrainingRoute
+  '/admin/transactions': typeof AdminTransactionsRouteWithChildren
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/historial/$txId': typeof MainHistorialTxIdRoute
+  '/admin/fridges/$id': typeof AdminFridgesIdRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
+  '/admin/review/labeling': typeof AdminReviewLabelingRoute
+  '/admin/sim/$fridgeId': typeof AdminSimFridgeIdRoute
+  '/admin/transactions/$id': typeof AdminTransactionsIdRoute
+  '/admin/review/label/$transactionId': typeof AdminReviewLabelTransactionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -81,32 +194,79 @@ export interface FileRoutesByTo {
   '/heladeras': typeof MainHeladerasRoute
   '/historial': typeof MainHistorialRouteWithChildren
   '/tarjetas': typeof MainTarjetasRoute
+  '/admin/fridges': typeof AdminFridgesRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/products': typeof AdminProductsRouteWithChildren
+  '/admin/review': typeof AdminReviewRouteWithChildren
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sim': typeof AdminSimRouteWithChildren
+  '/admin/training': typeof AdminTrainingRoute
+  '/admin/transactions': typeof AdminTransactionsRouteWithChildren
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin': typeof AdminIndexRoute
   '/historial/$txId': typeof MainHistorialTxIdRoute
+  '/admin/fridges/$id': typeof AdminFridgesIdRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
+  '/admin/review/labeling': typeof AdminReviewLabelingRoute
+  '/admin/sim/$fridgeId': typeof AdminSimFridgeIdRoute
+  '/admin/transactions/$id': typeof AdminTransactionsIdRoute
+  '/admin/review/label/$transactionId': typeof AdminReviewLabelTransactionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_main': typeof MainRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_main/heladeras': typeof MainHeladerasRoute
   '/_main/historial': typeof MainHistorialRouteWithChildren
   '/_main/tarjetas': typeof MainTarjetasRoute
+  '/admin/fridges': typeof AdminFridgesRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/products': typeof AdminProductsRouteWithChildren
+  '/admin/review': typeof AdminReviewRouteWithChildren
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sim': typeof AdminSimRouteWithChildren
+  '/admin/training': typeof AdminTrainingRoute
+  '/admin/transactions': typeof AdminTransactionsRouteWithChildren
   '/sesion/$fridgeId': typeof SesionFridgeIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/_main/historial/$txId': typeof MainHistorialTxIdRoute
+  '/admin/fridges/$id': typeof AdminFridgesIdRoute
+  '/admin/products/$id': typeof AdminProductsIdRoute
+  '/admin/review/labeling': typeof AdminReviewLabelingRoute
+  '/admin/sim/$fridgeId': typeof AdminSimFridgeIdRoute
+  '/admin/transactions/$id': typeof AdminTransactionsIdRoute
+  '/admin/review/label/$transactionId': typeof AdminReviewLabelTransactionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/login'
     | '/register'
     | '/heladeras'
     | '/historial'
     | '/tarjetas'
+    | '/admin/fridges'
+    | '/admin/login'
+    | '/admin/products'
+    | '/admin/review'
+    | '/admin/settings'
+    | '/admin/sim'
+    | '/admin/training'
+    | '/admin/transactions'
     | '/sesion/$fridgeId'
+    | '/admin/'
     | '/historial/$txId'
+    | '/admin/fridges/$id'
+    | '/admin/products/$id'
+    | '/admin/review/labeling'
+    | '/admin/sim/$fridgeId'
+    | '/admin/transactions/$id'
+    | '/admin/review/label/$transactionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -115,24 +275,56 @@ export interface FileRouteTypes {
     | '/heladeras'
     | '/historial'
     | '/tarjetas'
+    | '/admin/fridges'
+    | '/admin/login'
+    | '/admin/products'
+    | '/admin/review'
+    | '/admin/settings'
+    | '/admin/sim'
+    | '/admin/training'
+    | '/admin/transactions'
     | '/sesion/$fridgeId'
+    | '/admin'
     | '/historial/$txId'
+    | '/admin/fridges/$id'
+    | '/admin/products/$id'
+    | '/admin/review/labeling'
+    | '/admin/sim/$fridgeId'
+    | '/admin/transactions/$id'
+    | '/admin/review/label/$transactionId'
   id:
     | '__root__'
     | '/'
     | '/_main'
+    | '/admin'
     | '/login'
     | '/register'
     | '/_main/heladeras'
     | '/_main/historial'
     | '/_main/tarjetas'
+    | '/admin/fridges'
+    | '/admin/login'
+    | '/admin/products'
+    | '/admin/review'
+    | '/admin/settings'
+    | '/admin/sim'
+    | '/admin/training'
+    | '/admin/transactions'
     | '/sesion/$fridgeId'
+    | '/admin/'
     | '/_main/historial/$txId'
+    | '/admin/fridges/$id'
+    | '/admin/products/$id'
+    | '/admin/review/labeling'
+    | '/admin/sim/$fridgeId'
+    | '/admin/transactions/$id'
+    | '/admin/review/label/$transactionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MainRoute: typeof MainRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SesionFridgeIdRoute: typeof SesionFridgeIdRoute
@@ -154,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_main': {
       id: '/_main'
       path: ''
@@ -168,12 +367,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/sesion/$fridgeId': {
       id: '/sesion/$fridgeId'
       path: '/sesion/$fridgeId'
       fullPath: '/sesion/$fridgeId'
       preLoaderRoute: typeof SesionFridgeIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/transactions': {
+      id: '/admin/transactions'
+      path: '/transactions'
+      fullPath: '/admin/transactions'
+      preLoaderRoute: typeof AdminTransactionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/training': {
+      id: '/admin/training'
+      path: '/training'
+      fullPath: '/admin/training'
+      preLoaderRoute: typeof AdminTrainingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sim': {
+      id: '/admin/sim'
+      path: '/sim'
+      fullPath: '/admin/sim'
+      preLoaderRoute: typeof AdminSimRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/review': {
+      id: '/admin/review'
+      path: '/review'
+      fullPath: '/admin/review'
+      preLoaderRoute: typeof AdminReviewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/fridges': {
+      id: '/admin/fridges'
+      path: '/fridges'
+      fullPath: '/admin/fridges'
+      preLoaderRoute: typeof AdminFridgesRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_main/tarjetas': {
       id: '/_main/tarjetas'
@@ -196,12 +458,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainHeladerasRouteImport
       parentRoute: typeof MainRoute
     }
+    '/admin/transactions/$id': {
+      id: '/admin/transactions/$id'
+      path: '/$id'
+      fullPath: '/admin/transactions/$id'
+      preLoaderRoute: typeof AdminTransactionsIdRouteImport
+      parentRoute: typeof AdminTransactionsRoute
+    }
+    '/admin/sim/$fridgeId': {
+      id: '/admin/sim/$fridgeId'
+      path: '/$fridgeId'
+      fullPath: '/admin/sim/$fridgeId'
+      preLoaderRoute: typeof AdminSimFridgeIdRouteImport
+      parentRoute: typeof AdminSimRoute
+    }
+    '/admin/review/labeling': {
+      id: '/admin/review/labeling'
+      path: '/labeling'
+      fullPath: '/admin/review/labeling'
+      preLoaderRoute: typeof AdminReviewLabelingRouteImport
+      parentRoute: typeof AdminReviewRoute
+    }
+    '/admin/products/$id': {
+      id: '/admin/products/$id'
+      path: '/$id'
+      fullPath: '/admin/products/$id'
+      preLoaderRoute: typeof AdminProductsIdRouteImport
+      parentRoute: typeof AdminProductsRoute
+    }
+    '/admin/fridges/$id': {
+      id: '/admin/fridges/$id'
+      path: '/$id'
+      fullPath: '/admin/fridges/$id'
+      preLoaderRoute: typeof AdminFridgesIdRouteImport
+      parentRoute: typeof AdminFridgesRoute
+    }
     '/_main/historial/$txId': {
       id: '/_main/historial/$txId'
       path: '/$txId'
       fullPath: '/historial/$txId'
       preLoaderRoute: typeof MainHistorialTxIdRouteImport
       parentRoute: typeof MainHistorialRoute
+    }
+    '/admin/review/label/$transactionId': {
+      id: '/admin/review/label/$transactionId'
+      path: '/label/$transactionId'
+      fullPath: '/admin/review/label/$transactionId'
+      preLoaderRoute: typeof AdminReviewLabelTransactionIdRouteImport
+      parentRoute: typeof AdminReviewRoute
     }
   }
 }
@@ -232,9 +536,97 @@ const MainRouteChildren: MainRouteChildren = {
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
+interface AdminFridgesRouteChildren {
+  AdminFridgesIdRoute: typeof AdminFridgesIdRoute
+}
+
+const AdminFridgesRouteChildren: AdminFridgesRouteChildren = {
+  AdminFridgesIdRoute: AdminFridgesIdRoute,
+}
+
+const AdminFridgesRouteWithChildren = AdminFridgesRoute._addFileChildren(
+  AdminFridgesRouteChildren,
+)
+
+interface AdminProductsRouteChildren {
+  AdminProductsIdRoute: typeof AdminProductsIdRoute
+}
+
+const AdminProductsRouteChildren: AdminProductsRouteChildren = {
+  AdminProductsIdRoute: AdminProductsIdRoute,
+}
+
+const AdminProductsRouteWithChildren = AdminProductsRoute._addFileChildren(
+  AdminProductsRouteChildren,
+)
+
+interface AdminReviewRouteChildren {
+  AdminReviewLabelingRoute: typeof AdminReviewLabelingRoute
+  AdminReviewLabelTransactionIdRoute: typeof AdminReviewLabelTransactionIdRoute
+}
+
+const AdminReviewRouteChildren: AdminReviewRouteChildren = {
+  AdminReviewLabelingRoute: AdminReviewLabelingRoute,
+  AdminReviewLabelTransactionIdRoute: AdminReviewLabelTransactionIdRoute,
+}
+
+const AdminReviewRouteWithChildren = AdminReviewRoute._addFileChildren(
+  AdminReviewRouteChildren,
+)
+
+interface AdminSimRouteChildren {
+  AdminSimFridgeIdRoute: typeof AdminSimFridgeIdRoute
+}
+
+const AdminSimRouteChildren: AdminSimRouteChildren = {
+  AdminSimFridgeIdRoute: AdminSimFridgeIdRoute,
+}
+
+const AdminSimRouteWithChildren = AdminSimRoute._addFileChildren(
+  AdminSimRouteChildren,
+)
+
+interface AdminTransactionsRouteChildren {
+  AdminTransactionsIdRoute: typeof AdminTransactionsIdRoute
+}
+
+const AdminTransactionsRouteChildren: AdminTransactionsRouteChildren = {
+  AdminTransactionsIdRoute: AdminTransactionsIdRoute,
+}
+
+const AdminTransactionsRouteWithChildren =
+  AdminTransactionsRoute._addFileChildren(AdminTransactionsRouteChildren)
+
+interface AdminRouteChildren {
+  AdminFridgesRoute: typeof AdminFridgesRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminProductsRoute: typeof AdminProductsRouteWithChildren
+  AdminReviewRoute: typeof AdminReviewRouteWithChildren
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSimRoute: typeof AdminSimRouteWithChildren
+  AdminTrainingRoute: typeof AdminTrainingRoute
+  AdminTransactionsRoute: typeof AdminTransactionsRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminFridgesRoute: AdminFridgesRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminProductsRoute: AdminProductsRouteWithChildren,
+  AdminReviewRoute: AdminReviewRouteWithChildren,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminSimRoute: AdminSimRouteWithChildren,
+  AdminTrainingRoute: AdminTrainingRoute,
+  AdminTransactionsRoute: AdminTransactionsRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainRoute: MainRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SesionFridgeIdRoute: SesionFridgeIdRoute,
@@ -242,13 +634,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
