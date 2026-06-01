@@ -24,3 +24,30 @@ export type SessionState =
   | "processing"
   | "done"
   | "error";
+
+export type Product = {
+  id: string;
+  name: string;
+  brand?: string;
+  price: number; // ARS
+  emoji?: string;
+};
+
+export type TxItem = {
+  productId: string;
+  qty: number;
+  unitPrice: number; // snapshot
+};
+
+export type TxStatus = "completed" | "in_review" | "adjusted" | "cancelled";
+
+export type Transaction = {
+  id: string;
+  fridgeId: string;
+  fridgeName: string;
+  createdAt: number;
+  items: TxItem[];
+  status: TxStatus;
+  appealReason?: string;
+  cardLast4?: string;
+};
