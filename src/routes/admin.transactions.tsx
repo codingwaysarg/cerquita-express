@@ -90,7 +90,7 @@ function TxList() {
   }, [items, cursor, navigate]);
 
   function toggle(k: keyof typeof search, value: any) {
-    navigate({ search: (prev) => ({ ...prev, [k]: value }) as any });
+    navigate({ search: ((prev: any) => ({ ...prev, [k]: value })) as any });
   }
   function toggleStatus(s: string) {
     const cur = new Set(search.status || []);
